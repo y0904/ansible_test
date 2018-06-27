@@ -1,0 +1,19 @@
+---
+- name: Get Interface Information From Cisco IOS Device
+  hosts: nxos
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Get Interface Information From Cisco IOS Device
+    ntc_show_command:
+      connection: ssh
+      platform: cisco_nxos
+      command: show interface
+      template_dir: /var/lib/awx/projects/templates
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+    register: result
+  - debug: 
+      var: result

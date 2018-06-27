@@ -1,0 +1,29 @@
+---
+- hosts: ios
+  gather_facts: True
+  connection: local
+
+  tasks:
+   - name: Ansible date fact from server
+     debug:
+       var=ansible_date_time.date
+
+   - name: Get Info
+     ntc_show_command:
+       host: "{{ inventory_hostname }}"
+       username: "{{ username }}"
+       password: "{{ password }}"
+       connection: ssh
+       template_dir: /var/lib/awx/projects/templates
+       platform: cisco_ios
+       command: show int Gi2/9
+     register: int
+
+   - name: Debug
+     debug:
+       var=int
+   
+   - name: Save The File(JSON)
+     template:
+       src: ./gather_int.template
+       dest: "/var/lib/awx/projects/backups/{{ansible_date_time.date}}_gather_int.result.{{inventory_hostname}}"

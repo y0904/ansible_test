@@ -1,0 +1,17 @@
+---
+- hosts: f5
+  connection: local
+
+  tasks:
+    - name: Add node
+      bigip_node:
+        server: "{{ inventory_hostname }}"
+        user: "admin"
+        password: "admin"
+        state: "present"
+        host: "192.168.1.9"
+        name: "r192_9"
+        validate_certs: False
+      register: result
+    - debug:
+        var: result
